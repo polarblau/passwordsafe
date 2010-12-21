@@ -49,11 +49,20 @@ describe PasswordSafe::Safe do
     end
   end
   context "read_safe" do
-    it "reads encrypted data" do
+    it "reads encrypted data out of an existing safe" do
       @safe = PasswordSafe::Safe.new(@file)
+      data = "data to encrypt"
+      klass = Class.new { include PasswordSafe::Encryptor}
+      @encryptor = klass.new
+      hash = @encryptor.hash('masterpass')
+      @safe.write_safe(data, hash)
+      #got data into an existing safe...
+
+      @safe.read_safe(hash).should eq(data)
     end
   end
   after(:each) do
+    #We check on the existance of files when we expect them to exist so this seems ok
     File.delete @filename if File.file?(@filename)
   end
 end # describe PasswordSafe::Safe

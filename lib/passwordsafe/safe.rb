@@ -16,6 +16,9 @@ module PasswordSafe
       encrypted_data = encrypt(data, hash)
       File.open(@safefile, 'w') {|f| f.write encrypted_data}
     end
+    def read_safe hash
+      decrypt(File.read(@safefile), hash)
+    end
   end
 end
 
