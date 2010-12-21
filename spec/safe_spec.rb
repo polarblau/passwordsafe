@@ -2,13 +2,16 @@ require 'spec_helper'
 require 'passwordsafe/safe'
 
 describe PasswordSafe::Safe do
+  before (:each) do
+    @file = 'passwordsafe'
+    @filename = File.expand_path(@file)
+  end
   it "takes a safe filename at initilaization" do
     PasswordSafe::Safe.should respond_to(:new).with(1).argument
   end
   context "access_safe" do
     before(:each) do
-      @filename = File.expand_path('passwordsafe')
-      @safe = PasswordSafe::Safe.new(@filename)
+      @safe = PasswordSafe::Safe.new(@file)
     end
     it "creates a safe if none exists" do
       @safe.access_safe
@@ -20,15 +23,11 @@ describe PasswordSafe::Safe do
       @safe.access_safe
       File.read(@filename).should eq(content)
     end
-    after(:each) do
-      File.delete @filename
-    end
   end
 
   context "write_safe" do
     before(:each) do
-      @filename = File.expand_path('passwordsafe')
-      @safe = PasswordSafe::Safe.new(@filename)
+      @safe = PasswordSafe::Safe.new(@file)
       klass = Class.new { include PasswordSafe::Encryptor}
       @encryptor = klass.new
     end
@@ -48,10 +47,14 @@ describe PasswordSafe::Safe do
       @safe.write_safe(data, hash)
       @encryptor.decrypt(File.read(@filename), hash).should eq(data)
     end
-
-    after(:each) do
-      File.delete @filename
+  end
+  context "read_safe" do
+    it "reads encrypted data" do
+      @safe = PasswordSafe::Safe.new(@file)
     end
+  end
+  after(:each) do
+    File.delete @filename if File.file?(@filename)
   end
 end # describe PasswordSafe::Safe
 
