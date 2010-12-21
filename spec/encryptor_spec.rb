@@ -38,5 +38,19 @@ describe PasswordSafe::Encryptor do
       @encryptor.encrypt(@string, @hash).should_not eq(@encryptor.encrypt("anotherstring", @hash))
     end
   end
+  context "decrypt" do
+    before(:each) do
+      @string = "teststring"
+      @hash = @encryptor.hash("hashstring")
+      @data = @encryptor.encrypt(@string, @hash)
+    end
+    it "decrypts a string" do
+      @encryptor.should respond_to(:decrypt).with(2).arguments
+      @encryptor.decrypt(@data, @hash).should be_a(String)
+    end
+    it "decrypts an encrypted string" do
+      @encryptor.decrypt(@data, @hash).should eq(@string)
+    end
+  end
 end # describe PasswordSafe::Encryptor
 
