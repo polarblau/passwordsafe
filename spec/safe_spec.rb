@@ -8,16 +8,16 @@ describe PasswordSafe::Safe do
   context "access_safe" do
     before(:each) do
       @filename = File.expand_path('passwordsafe')
-      @safe = PasswordSafe::Safe.new()
+      @safe = PasswordSafe::Safe.new(@filename)
     end
     it "creates a safe if none exists" do
-      @safe.access_safe(@filename)
+      @safe.access_safe
       File.file?(@filename).should be_true
     end
     it "doesn't modify an existing safe" do
       content = "some existing file content"
       File.open(@filename, 'w') {|f| f.write content}
-      @safe.access_safe(@filename)
+      @safe.access_safe
       File.read(@filename).should eq(content)
     end
     after(:each) do
@@ -27,7 +27,7 @@ describe PasswordSafe::Safe do
   context "write_safe" do
     before(:each) do
       @filename = File.expand_path('passwordsafe')
-      @safe = PasswordSafe::Safe.new()
+      @safe = PasswordSafe::Safe.new(@filename)
       klass = Class.new { include PasswordSafe::Encryptor}
       @encryptor = klass.new
     end
@@ -36,7 +36,7 @@ describe PasswordSafe::Safe do
       hash = @encryptor.hash('masterpass')
       encrypted_data = @encryptor.encrypt(data, hash)
 
-      @safe.write_safe(@filename, data, hash)
+      @safe.write_safe(data, hash)
       File.file?(@filename).should be_true
       @encryptor.decrypt(File.read(@filename), hash).should eq(data)
     end

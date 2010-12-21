@@ -4,16 +4,17 @@ module PasswordSafe
   class Safe
     include PasswordSafe::Encryptor
 
-    def initalize filename
+    def initialize filename
+      @safefile = File.expand_path(filename)
     end
 
-    def access_safe filename
-      FileUtils.touch filename
+    def access_safe
+      FileUtils.touch @safefile
     end
-    def write_safe filename, data, hash
-      access_safe filename
+    def write_safe data, hash
+      access_safe
       encrypted_data = encrypt(data, hash)
-      File.open(filename, 'w') {|f| f.write encrypted_data}
+      File.open(@safefile, 'w') {|f| f.write encrypted_data}
     end
   end
 end
