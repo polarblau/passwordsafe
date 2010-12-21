@@ -1,0 +1,3 @@
+module Passwordsafe
+  # Your code goes here...
+end
