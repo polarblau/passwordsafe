@@ -24,6 +24,7 @@ describe PasswordSafe::Safe do
       File.delete @filename
     end
   end
+
   context "write_safe" do
     before(:each) do
       @filename = File.expand_path('passwordsafe')
@@ -31,15 +32,23 @@ describe PasswordSafe::Safe do
       klass = Class.new { include PasswordSafe::Encryptor}
       @encryptor = klass.new
     end
-    it "writes data to a safe" do
+
+    it "creates a safe file to write to" do
       data = "data to encrypt"
       hash = @encryptor.hash('masterpass')
-      encrypted_data = @encryptor.encrypt(data, hash)
 
       @safe.write_safe(data, hash)
       File.file?(@filename).should be_true
+    end
+
+    it "writes encrypted data to a safe" do
+      data = "data to encrypt"
+      hash = @encryptor.hash('masterpass')
+
+      @safe.write_safe(data, hash)
       @encryptor.decrypt(File.read(@filename), hash).should eq(data)
     end
+
     after(:each) do
       File.delete @filename
     end
