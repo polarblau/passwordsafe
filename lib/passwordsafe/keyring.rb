@@ -19,10 +19,20 @@ module PasswordSafe
     def add name, password
       raise KeyExistsException, "Key already exists in keyring, if you'd like to add it remove the existing key", caller if @ring.has_key?(name)
       @ring.store(name, password)
+      @safe.write_safe @ring
     end
 
     def get name
       @ring[name]
+    end
+
+    def list
+      @ring.keys
+    end
+
+    def remove name
+      @ring.delete(name)
+      @safe.write_safe @ring
     end
 
     private
