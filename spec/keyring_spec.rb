@@ -50,6 +50,7 @@ describe PasswordSafe::Keyring do
       @keyring.get("name").should eq("password")
     end
   end
+
   context "list" do
     it "returns a list of existing key names" do
       @safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
@@ -61,6 +62,7 @@ describe PasswordSafe::Keyring do
       @keyring.list.should eq([])
     end
   end
+
   context "remove" do
     it "removes an existing key" do
       @safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
