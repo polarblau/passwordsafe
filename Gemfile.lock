@@ -41,6 +41,7 @@ PLATFORMS
 
 DEPENDENCIES
   aruba
+  bundler
   cucumber
   highline
   passwordsafe!
