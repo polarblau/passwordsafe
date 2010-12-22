@@ -4,6 +4,7 @@ require 'passwordsafe/safe'
 
 describe PasswordSafe::Keyring do
   before(:each) do
+    #set up a safe that will clear initilaization and send empty data
     @safe = mock PasswordSafe::Safe
     @safe.stub(:read_safe).and_return({})
   end
@@ -37,6 +38,7 @@ describe PasswordSafe::Keyring do
       expect{@keyring.add("name", "password")}.to raise_error()
     end
   end
+
   context "get" do
     it "gets a key from the keyring" do
       @safe.stub(:read_safe).and_return({"name" => "password"})

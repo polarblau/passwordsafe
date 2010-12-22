@@ -1,7 +1,6 @@
 require 'openssl'
 
 module  PasswordSafe
-
   module Encryptor; extend self;
 
     def decrypt(data, pwhash)
