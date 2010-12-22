@@ -21,6 +21,10 @@ module PasswordSafe
       @ring.store(name, password)
     end
 
+    def get name
+      @ring[name]
+    end
+
     private
       def load
         @safe.read_safe

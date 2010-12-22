@@ -31,5 +31,13 @@ describe PasswordSafe::Keyring do
       expect{@keyring.add("name", "password")}.to raise_error()
     end
   end
+  context "get" do
+    it "gets a key from the keyring" do
+      safe = mock "PasswordSafe::Safe"
+      safe.stub(:read_safe).and_return({"name" => "password"})
+      @keyring = PasswordSafe::Keyring.new(safe)
+      @keyring.get("name").should eq("password")
+    end
+  end
 end
 
