@@ -6,6 +6,7 @@ describe PasswordSafe::Keyring do
     #set up a safe that will clear initilaization and send empty data
     @safe = mock PasswordSafe::Safe
     @safe.stub(:read_safe).and_return({})
+    @safe.stub(:write_safe)
   end
 
   it "expects to get a Safe to read/write" do
@@ -36,6 +37,10 @@ describe PasswordSafe::Keyring do
       @keyring.add("name", "password")
       expect{@keyring.add("name", "password")}.to raise_error()
     end
+    it "saves the modified keyring to the safe" do
+      @safe.should_receive(:write_safe).with({"name" => "password"})
+      @keyring.add("name", "password")
+    end
   end
 
   context "get" do
@@ -54,6 +59,14 @@ describe PasswordSafe::Keyring do
     it "returns an empty array if there are no keys" do
       @keyring = PasswordSafe::Keyring.new(@safe)
       @keyring.list.should eq([])
+    end
+  end
+  context "remove" do
+    it "removes an existing key" do
+      @safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
+      @keyring = PasswordSafe::Keyring.new(@safe)
+      @keyring.remove("first")
+      @keyring.get("first").should eq(nil)
     end
   end
 end
