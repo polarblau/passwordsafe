@@ -33,7 +33,7 @@ describe PasswordSafe::Safe do
       @safe = PasswordSafe::Safe.new(@file, @masterpass)
       klass = Class.new { include PasswordSafe::Encryptor}
       @encryptor = klass.new
-      @data = "data to encrypt"
+      @data = {"data" => "encrypt"}
     end
 
     it "creates a safe file to write to" do
@@ -46,14 +46,14 @@ describe PasswordSafe::Safe do
 
       #we'll use our encryptor to check the contents
       hash = @encryptor.hash(@masterpass)
-      @encryptor.decrypt(File.read(@filename), hash).should eq(@data)
+      Marshal.load(@encryptor.decrypt(File.read(@filename), hash)).should eq(@data)
     end
   end
 
   context "read_safe" do
     it "reads encrypted data out of an existing safe" do
       @safe = PasswordSafe::Safe.new(@file, @masterpass)
-      data = "data to encrypt"
+      data = {"data" => "encrypt"}
       @safe.write_safe(data)
       #got data into an existing safe...now read it out again
       @safe.read_safe.should eq(data)

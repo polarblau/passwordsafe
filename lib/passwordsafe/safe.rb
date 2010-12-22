@@ -10,15 +10,20 @@ module PasswordSafe
     end
 
     def access_safe
-      FileUtils.touch @safefile
+      unless File.file? @safefile
+        FileUtils.touch @safefile
+        write_safe
+      end
     end
-    def write_safe data
+    def write_safe data = {}
+      dump = Marshal.dump(data)
       access_safe
-      encrypted_data = encrypt(data, @mphash)
+      encrypted_data = encrypt(dump, @mphash)
       File.open(@safefile, 'w') {|f| f.write encrypted_data}
     end
     def read_safe
-      decrypt(File.read(@safefile), @mphash)
+      access_safe
+      Marshal.load decrypt(File.read(@safefile), @mphash) || {}
     end
   end
 end
