@@ -25,6 +25,10 @@ module PasswordSafe
       @ring[name]
     end
 
+    def list
+      @ring.keys
+    end
+
     private
       def load_from_safe
         @safe.read_safe

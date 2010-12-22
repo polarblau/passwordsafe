@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'passwordsafe/keyring'
-require 'passwordsafe/safe'
 
 describe PasswordSafe::Keyring do
   before(:each) do
@@ -44,6 +43,17 @@ describe PasswordSafe::Keyring do
       @safe.stub(:read_safe).and_return({"name" => "password"})
       @keyring = PasswordSafe::Keyring.new(@safe)
       @keyring.get("name").should eq("password")
+    end
+  end
+  context "list" do
+    it "returns a list of existing key names" do
+      @safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
+      @keyring = PasswordSafe::Keyring.new(@safe)
+      @keyring.list.should eq(["first", "second"])
+    end
+    it "returns an empty array if there are no keys" do
+      @keyring = PasswordSafe::Keyring.new(@safe)
+      @keyring.list.should eq([])
     end
   end
 end
