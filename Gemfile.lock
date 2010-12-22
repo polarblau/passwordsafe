@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     passwordsafe (0.0.1)
+      highline
       thor
 
 GEM
@@ -22,6 +23,7 @@ GEM
     gherkin (2.3.2)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
+    highline (1.6.1)
     json (1.4.6)
     rspec (2.3.0)
       rspec-core (~> 2.3.0)
@@ -40,6 +42,7 @@ PLATFORMS
 DEPENDENCIES
   aruba
   cucumber
+  highline
   passwordsafe!
   rspec
   thor
