@@ -68,6 +68,12 @@ describe PasswordSafe::Keyring do
       @keyring.remove("first")
       @keyring.get("first").should eq(nil)
     end
+    it "saves the modified keyring to the safe" do
+      @safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
+      @safe.should_receive(:write_safe).with({"second" => "password"})
+      @keyring = PasswordSafe::Keyring.new(@safe)
+      @keyring.remove("first")
+    end
   end
 end
 

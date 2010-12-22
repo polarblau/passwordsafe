@@ -32,6 +32,7 @@ module PasswordSafe
 
     def remove name
       @ring.delete(name)
+      @safe.write_safe @ring
     end
 
     private
