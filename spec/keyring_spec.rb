@@ -3,15 +3,22 @@ require 'passwordsafe/keyring'
 require 'passwordsafe/safe'
 
 describe PasswordSafe::Keyring do
+  before(:each) do
+    #set up a safe that will clear initilaization and send empty data
+    @safe = mock PasswordSafe::Safe
+    @safe.stub(:read_safe).and_return({})
+  end
+
   it "expects to get a Safe to read/write" do
+    @safe.should_receive(:is_a?).and_return(true)
     PasswordSafe::Keyring.should respond_to(:new).with(1).argument
-    keyring = PasswordSafe::Keyring.new(PasswordSafe::Safe.new("safefile","masterpass"))
+    keyring = PasswordSafe::Keyring.new(@safe)
     keyring.should have_a_safe
   end
 
   context "length" do
     it "returns the number of keys in the keyring" do
-      keyring = PasswordSafe::Keyring.new(PasswordSafe::Safe.new("safefile","masterpass"))
+      keyring = PasswordSafe::Keyring.new(@safe)
       keyring.should respond_to(:length)
       keyring.length.should be_a(Integer)
     end
@@ -19,7 +26,7 @@ describe PasswordSafe::Keyring do
 
   context "add" do
     before(:each) do
-      @keyring = PasswordSafe::Keyring.new(PasswordSafe::Safe.new("safefile","masterpass"))
+      @keyring = PasswordSafe::Keyring.new(@safe)
     end
     it "adds a key to the keyring" do
       @keyring.should respond_to(:add).with(2).arguments
@@ -31,11 +38,11 @@ describe PasswordSafe::Keyring do
       expect{@keyring.add("name", "password")}.to raise_error()
     end
   end
+
   context "get" do
     it "gets a key from the keyring" do
-      safe = mock "PasswordSafe::Safe"
-      safe.stub(:read_safe).and_return({"name" => "password"})
-      @keyring = PasswordSafe::Keyring.new(safe)
+      @safe.stub(:read_safe).and_return({"name" => "password"})
+      @keyring = PasswordSafe::Keyring.new(@safe)
       @keyring.get("name").should eq("password")
     end
   end

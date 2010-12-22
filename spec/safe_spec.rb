@@ -58,11 +58,6 @@ describe PasswordSafe::Safe do
       #got data into an existing safe...now read it out again
       @safe.read_safe.should eq(data)
     end
-#
-#    it "throws an error if there is no file to read from" do
-#      @safe = PasswordSafe::Safe.new(@file, @masterpass)
-#      expect{@safe.read_safe}.to raise_error()
-#    end
   end
 
   after(:each) do

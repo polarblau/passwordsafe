@@ -5,7 +5,7 @@ module PasswordSafe
 
     def initialize safe = nil
       @safe = safe
-      @ring = load
+      @ring = load_from_safe
     end
 
     def has_a_safe?
@@ -26,7 +26,7 @@ module PasswordSafe
     end
 
     private
-      def load
+      def load_from_safe
         @safe.read_safe
       end
   end
