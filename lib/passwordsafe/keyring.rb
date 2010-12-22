@@ -2,6 +2,7 @@ require 'passwordsafe/safe'
 
 module PasswordSafe
   class Keyring
+    class KeyExistsException < StandardError; end
 
     def initialize safe = nil
       @safe = safe
