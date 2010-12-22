@@ -5,6 +5,7 @@ Feature: Add
 
 
     Scenario: Add a new password
-        When I run "password add name pa$$word"
-         Then the output should contain "password name added to safe"
+        When I run "password add name pa$$word" interactively
+        And I type "masterpa$$"
+        Then the output should contain "password name added to safe"
 
