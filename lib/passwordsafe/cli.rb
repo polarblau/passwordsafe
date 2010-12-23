@@ -22,7 +22,11 @@ module PasswordSafe
     def get name
       safe = make_safe
       password = PasswordSafe::Keyring.new(safe).get name
-      puts "#{name}: #{password}"
+      if password.nil?
+        puts "#{name} does not exist in this safe."
+      else
+        puts "#{name}: #{password}"
+      end
     end
 
     no_tasks do
