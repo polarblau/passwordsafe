@@ -18,6 +18,13 @@ module PasswordSafe
       end
     end
 
+    desc "get NAME", "Get an existing password with name NAME from keyring"
+    def get name
+      safe = make_safe
+      password = PasswordSafe::Keyring.new(safe).get name
+      puts "#{name}: #{password}"
+    end
+
     no_tasks do
       def make_safe filename = DEFAULTSAFE
         masterpass = ask("Enter your master password:  ") { |q| q.echo = "x" }
