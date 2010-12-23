@@ -9,3 +9,10 @@ Feature: Get
         And I type "masterpa$$"
         Then the output should contain "name: "
 
+    @announce
+    Scenario: Get a password with a name that does not exist
+        Given A safe exists with masterpassword "masterpa$$" and a "name" key
+        When I run "password get name2" interactively
+        And I type "masterpa$$"
+        Then the output should contain "name2 does not exist in this safe."
+

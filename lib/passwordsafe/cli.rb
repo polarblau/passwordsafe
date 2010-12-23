@@ -22,6 +22,9 @@ module PasswordSafe
     def get name
       safe = make_safe
       password = PasswordSafe::Keyring.new(safe).get name
+      if password.nil?
+        puts "#{name} does not exist in this safe"
+      end
       puts "#{name}: #{password}"
     end
 
