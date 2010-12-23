@@ -49,6 +49,10 @@ describe PasswordSafe::Keyring do
       @keyring = PasswordSafe::Keyring.new(@safe)
       @keyring.get("name").should eq("password")
     end
+    it "returns nil if the key does not exist" do
+      @keyring = PasswordSafe::Keyring.new(@safe)
+      @keyring.get("name").should be_nil
+    end
   end
 
   context "list" do
