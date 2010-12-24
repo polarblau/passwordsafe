@@ -15,7 +15,6 @@ describe PasswordSafe::Keyring do
   describe "length" do
 
     it "returns the number of keys in the keyring" do
-      keyring = PasswordSafe::Keyring.new(safe)
       keyring.should respond_to(:length)
       keyring.length.should be_a(Integer)
     end
@@ -42,7 +41,6 @@ describe PasswordSafe::Keyring do
 
     it "gets a key from the keyring" do
       safe.stub(:read_safe).and_return({"name" => "password"})
-      keyring = PasswordSafe::Keyring.new(safe)
       keyring.get("name").should eq("password")
     end
     it "returns nil if the key does not exist" do
@@ -54,7 +52,6 @@ describe PasswordSafe::Keyring do
 
     it "returns a list of existing key names" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
-      keyring = PasswordSafe::Keyring.new(safe)
       keyring.list.should eq(["first", "second"])
     end
     it "returns an empty array if there are no keys" do
@@ -66,14 +63,12 @@ describe PasswordSafe::Keyring do
 
     it "removes an existing key" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
-      keyring = PasswordSafe::Keyring.new(safe)
       keyring.remove("first")
       keyring.get("first").should eq(nil)
     end
     it "saves the modified keyring to the safe" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
       safe.should_receive(:write_safe).with({"second" => "password"})
-      keyring = PasswordSafe::Keyring.new(safe)
       keyring.remove("first")
     end
   end

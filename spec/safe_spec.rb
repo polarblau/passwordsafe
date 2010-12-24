@@ -14,6 +14,7 @@ describe PasswordSafe::Safe do
   describe "access_safe" do
 
     it "creates a safe if none exists" do
+      File.delete filename if File.file?(filename)
       safe.access_safe
       File.file?(filename).should be_true
     end
@@ -30,6 +31,7 @@ describe PasswordSafe::Safe do
     let(:data) { ({"data" => "encrypt"}) }
 
     it "creates a safe file to write to" do
+      File.delete filename if File.file?(filename)
       safe.write_safe(data)
       File.file?(filename).should be_true
     end
