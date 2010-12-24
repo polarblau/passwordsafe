@@ -4,7 +4,7 @@ require 'passwordsafe/encryptor'
 describe PasswordSafe::Encryptor do
   let(:encryptor) {(Class.new { include PasswordSafe::Encryptor}).new }
 
-  context "hash" do
+  describe "hash" do
     it "creates a password hash" do
       encryptor.should respond_to(:hash).with(1).argument
       encryptor.hash("test").should be_a(String)
@@ -18,7 +18,7 @@ describe PasswordSafe::Encryptor do
       encryptor.hash("test").should_not eq(encryptor.hash("another"))
     end
   end
-  context "encrypt" do
+  describe "encrypt" do
     let(:string) { "teststring" }
     let(:hash) { encryptor.hash("hashstring") }
 
@@ -33,7 +33,7 @@ describe PasswordSafe::Encryptor do
       encryptor.encrypt(string, hash).should_not eq(encryptor.encrypt("anotherstring", hash))
     end
   end
-  context "decrypt" do
+  describe "decrypt" do
     let(:string) { "teststring" }
     let(:hash) { encryptor.hash("hashstring") }
     let(:data) { encryptor.encrypt(string, hash) }

@@ -12,7 +12,8 @@ describe PasswordSafe::Keyring do
     keyring.should have_a_safe
   end
 
-  context "length" do
+  describe "length" do
+
     it "returns the number of keys in the keyring" do
       keyring = PasswordSafe::Keyring.new(safe)
       keyring.should respond_to(:length)
@@ -20,7 +21,7 @@ describe PasswordSafe::Keyring do
     end
   end
 
-  context "add" do
+  describe "add" do
 
     it "adds a key to the keyring" do
       keyring.should respond_to(:add).with(2).arguments
@@ -37,7 +38,7 @@ describe PasswordSafe::Keyring do
     end
   end
 
-  context "get" do
+  describe "get" do
 
     it "gets a key from the keyring" do
       safe.stub(:read_safe).and_return({"name" => "password"})
@@ -49,7 +50,7 @@ describe PasswordSafe::Keyring do
     end
   end
 
-  context "list" do
+  describe "list" do
 
     it "returns a list of existing key names" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
@@ -61,7 +62,7 @@ describe PasswordSafe::Keyring do
     end
   end
 
-  context "remove" do
+  describe "remove" do
 
     it "removes an existing key" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})

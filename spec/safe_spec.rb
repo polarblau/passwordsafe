@@ -11,7 +11,7 @@ describe PasswordSafe::Safe do
     PasswordSafe::Safe.should respond_to(:new).with(2).arguments
   end
 
-  context "access_safe" do
+  describe "access_safe" do
 
     it "creates a safe if none exists" do
       safe.access_safe
@@ -25,7 +25,7 @@ describe PasswordSafe::Safe do
     end
   end
 
-  context "write_safe" do
+  describe "write_safe" do
     let(:encryptor) {(Class.new { include PasswordSafe::Encryptor}).new }
     let(:data) { ({"data" => "encrypt"}) }
 
@@ -43,7 +43,7 @@ describe PasswordSafe::Safe do
     end
   end
 
-  context "read_safe" do
+  describe "read_safe" do
     let(:data) { ({"data" => "encrypt"}) }
 
     it "reads encrypted data out of an existing safe" do
