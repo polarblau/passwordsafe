@@ -26,31 +26,33 @@ describe PasswordSafe::Safe do
     end
   end
 
-  describe "write_safe" do
-    let(:encryptor) {(Class.new { include PasswordSafe::Encryptor}).new }
+  context "modifying file" do
     let(:data) { ({"data" => "encrypt"}) }
 
-    it "creates a safe file to write to" do
-      File.delete filename if File.file?(filename)
-      safe.write_safe(data)
-      File.file?(filename).should be_true
+    describe "write_safe" do
+
+      it "creates a safe file to write to" do
+        File.delete filename if File.file?(filename)
+        safe.write_safe(data)
+        File.file?(filename).should be_true
+      end
+
+      it "writes encrypted data to a safe" do
+        encryptor = (Class.new { include PasswordSafe::Encryptor}).new
+        safe.write_safe(data)
+
+        #we'll use our encryptor to check the contents
+        hash = encryptor.hash(masterpass)
+        Marshal.load(encryptor.decrypt(File.read(filename), hash)).should eq(data)
+      end
     end
 
-    it "writes encrypted data to a safe" do
-      safe.write_safe(data)
+    describe "read_safe" do
 
-      #we'll use our encryptor to check the contents
-      hash = encryptor.hash(masterpass)
-      Marshal.load(encryptor.decrypt(File.read(filename), hash)).should eq(data)
-    end
-  end
-
-  describe "read_safe" do
-    let(:data) { ({"data" => "encrypt"}) }
-
-    it "reads encrypted data out of an existing safe" do
-      safe.write_safe(data)
-      safe.read_safe.should eq(data)
+      it "reads encrypted data out of an existing safe" do
+        safe.write_safe(data)
+        safe.read_safe.should eq(data)
+      end
     end
   end
 
