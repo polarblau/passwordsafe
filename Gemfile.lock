@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    passwordsafe (0.0.2)
+    passwordsafe (0.0.3)
       highline
       thor
 
