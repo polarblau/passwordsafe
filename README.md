@@ -5,10 +5,10 @@ Based on 'Tutorial: Build your own password safe with Ruby!' at http://rbjl.net/
 
 Basic implementation
     password add name password
-
-Not Implemented yet
     password get name
     password list
+
+Not Implemented yet
     password remove name
     password help
 
