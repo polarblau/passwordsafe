@@ -1,3 +1,6 @@
+== 0.0.4
+* New feature: `password list`
+
 == 0.0.3
 * New feature: `password get name`
 
