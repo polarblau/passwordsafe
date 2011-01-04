@@ -29,6 +29,14 @@ module PasswordSafe
       end
     end
 
+    desc "list", "List the names of all the existing passwords in the safe"
+    def list
+      safe = make_safe
+      keys = PasswordSafe::Keyring.new(safe).list
+      puts "List: (none)" if keys.empty?
+      puts "List: #{keys.join(", ")}"
+    end
+
     no_tasks do
       def make_safe filename = DEFAULTSAFE
         masterpass = ask("Enter your master password:  ") { |q| q.echo = "x" }

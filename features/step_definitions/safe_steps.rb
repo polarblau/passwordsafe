@@ -9,3 +9,13 @@ Given /^A safe exists with masterpassword "([^"]*)" and a "([^"]*)" key$/ do |ma
   end
 end
 
+Given /^A safe exists with masterpassword "([^"]*)" and "([^"]*)" keys$/ do |masterpass, keys|
+  in_current_dir do
+    safe = PasswordSafe::Safe.new(PasswordSafe::CLI::DEFAULTSAFE, masterpass)
+
+    keys.to_i.times do |i|
+      PasswordSafe::Keyring.new(safe).add "pass#{i}", "dummypass"
+    end
+  end
+end
+
