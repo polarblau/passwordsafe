@@ -6,8 +6,6 @@ module PasswordSafe
   class CLI < Thor
     DEFAULTSAFE = 'safefile'
 
-    map "-c" => :copy_to_clipboard                                               
-
     desc "add NAME PASSWORD", "Add a new PASSWORD to the keyring with name NAME"
     def add name, password
       safe = make_safe
@@ -21,14 +19,15 @@ module PasswordSafe
     end
 
     desc "get NAME", "Get an existing password with name NAME from keyring"
+    method_options :c => :boolean
     def get name
       safe = make_safe
       password = PasswordSafe::Keyring.new(safe).get name
       if password.nil?
         puts "#{name} does not exist in this safe."
       else
-        if options[:copy_to_clipboard]
-          echo password | pbcopy
+        if options[:c]
+          system "echo #{password} | pbcopy"
           puts "#{name}: #{password} has been copied to clip board"
         else
           puts "#{name}: #{password}"
