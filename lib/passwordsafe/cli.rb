@@ -19,19 +19,14 @@ module PasswordSafe
     end
 
     desc "get NAME", "Get an existing password with name NAME from keyring"
-    method_options :c => :boolean
     def get name
       safe = make_safe
       password = PasswordSafe::Keyring.new(safe).get name
       if password.nil?
         puts "#{name} does not exist in this safe."
       else
-        if options[:c]
-          system "echo #{password} | pbcopy"
-          puts "#{name}: #{password} has been copied to clip board"
-        else
-          puts "#{name}: #{password}"
-        end
+        system "/bin/bash -c 'echo -n #{password}' | pbcopy"
+        puts "#{name}: #{password}"
       end
     end
 
