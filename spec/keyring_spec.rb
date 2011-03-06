@@ -42,30 +42,30 @@ describe PasswordSafe::Keyring do
     end
   end
 
-  describe "create" do
+  describe "generate" do
     
     it "adds a generated password to the keyring" do
-      keyring.should respond_to(:create).with(1).arguments
-      keyring.create("name")
+      keyring.should respond_to(:generate).with(1).arguments
+      keyring.generate("name")
       keyring.length.should eq(1)
     end
     it "generates a password" do
-      keyring.should respond_to(:create).with(1).arguments
-      password = keyring.create("name")
+      keyring.should respond_to(:generate).with(1).arguments
+      password = keyring.generate("name")
       keyring.get("name").should eq(password)
     end
     it "generates a password of default length '8'" do
-      keyring.create("name").length.should eq(8)
+      keyring.generate("name").length.should eq(8)
     end
     it "generates a password of a specified length" do
-      keyring.create("name", 12).length.should eq(12)
+      keyring.generate("name", 12).length.should eq(12)
     end
     it "throws an error when generating passord for a duplicate key name" do
-      keyring.create("name")
-      expect{keyring.create("name")}.to raise_error()
+      keyring.generate("name")
+      expect{keyring.generate("name")}.to raise_error()
     end
-    it "should copy the created password to the clipboard" do
-      password = keyring.create("name")
+    it "should copy the generated password to the clipboard" do
+      password = keyring.generate("name")
       Clipboard.paste.should eq(password)
     end
     
