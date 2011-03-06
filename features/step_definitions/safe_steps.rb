@@ -3,6 +3,12 @@ require 'passwordsafe/keyring'
 require 'passwordsafe/cli'
 require 'clipboard'
 
+Given /^A safe exists with masterpassword "([^"]*)"$/ do |masterpass|
+  in_current_dir do
+    @safe = PasswordSafe::Safe.new(PasswordSafe::CLI::DEFAULTSAFE, masterpass)
+  end
+end
+
 Given /^A safe exists with masterpassword "([^"]*)" and a "([^"]*)" key$/ do |masterpass, key_name|
   in_current_dir do
     @safe = PasswordSafe::Safe.new(PasswordSafe::CLI::DEFAULTSAFE, masterpass)
