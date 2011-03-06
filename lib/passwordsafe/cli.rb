@@ -17,6 +17,19 @@ module PasswordSafe
         puts "password #{name} added to safe"
       end
     end
+    
+    desc "create NAME", "Create a new PASSWORD and add it to the keyring with NAME"
+    method_options :length => 8
+    def create name
+      safe = make_safe
+      begin
+        password = PasswordSafe::Keyring.new(safe).create(name, options[:length])
+      rescue PasswordSafe::Keyring::KeyExistsException => msg
+        puts "#{msg}"
+      else
+        puts "password #{password} generated and added to safe"
+      end
+    end
 
     desc "get NAME", "Get an existing password with name NAME from keyring"
     def get name
