@@ -1,4 +1,5 @@
 require 'passwordsafe/safe'
+require 'clipboard'
 
 module PasswordSafe
   class Keyring
@@ -28,11 +29,14 @@ module PasswordSafe
       password = generate_password(length)
       @ring.store(name, password)
       @safe.write_safe @ring
+      Clipboard.copy(password)
       password
     end
 
     def get name
-      @ring[name]
+      password = @ring[name]
+      Clipboard.copy(password)
+      password
     end
 
     def list

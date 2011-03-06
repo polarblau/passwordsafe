@@ -1,9 +1,14 @@
 require 'spec_helper'
 require 'passwordsafe/keyring'
+require 'clipboard'
 
 describe PasswordSafe::Keyring do
   let(:safe) { mock PasswordSafe::Safe, :read_safe => {}, :write_safe => nil }
   let(:keyring) { PasswordSafe::Keyring.new(safe) }
+  
+  after (:each) do
+    Clipboard.clear
+  end
 
   it "expects to get a Safe to read/write" do
     safe.should_receive(:is_a?).and_return(true)
@@ -59,6 +64,10 @@ describe PasswordSafe::Keyring do
       keyring.create("name")
       expect{keyring.create("name")}.to raise_error()
     end
+    it "should copy the created password to the clipboard" do
+      password = keyring.create("name")
+      Clipboard.paste.should eq(password)
+    end
     
   end
 
@@ -71,6 +80,12 @@ describe PasswordSafe::Keyring do
     it "returns nil if the key does not exist" do
       keyring.get("name").should be_nil
     end
+    it "should copy the retrieved password to the clipboard" do
+      safe.stub(:read_safe).and_return({"name" => "password"})
+      password = keyring.get("name")
+      Clipboard.paste.should eq(password)
+    end
+    
   end
 
   describe "list" do

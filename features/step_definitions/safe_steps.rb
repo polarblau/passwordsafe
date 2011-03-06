@@ -1,6 +1,7 @@
 require 'passwordsafe/safe'
 require 'passwordsafe/keyring'
 require 'passwordsafe/cli'
+require 'clipboard'
 
 Given /^A safe exists with masterpassword "([^"]*)" and a "([^"]*)" key$/ do |masterpass, key_name|
   in_current_dir do
@@ -20,8 +21,7 @@ Given /^A safe exists with masterpassword "([^"]*)" and "([^"]*)" keys$/ do |mas
 end
 
 Then /^the clipboard should contain the password for the "([^"]*)" key$/ do |key_name|
-  clipboard = %x["pbpaste"]
   password = PasswordSafe::Keyring.new(@safe).get key_name
-  password.should == clipboard
+  password.should eq(Clipboard.paste)
 end
 

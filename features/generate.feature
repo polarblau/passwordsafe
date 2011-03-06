@@ -7,11 +7,13 @@ Feature: Add
         When I run "password create name" interactively
         And I type "masterpa$$"
         Then the output should contain "generated and added to safe"
+        And the clipboard should contain the password for the "name" key
  
     Scenario: Generate a password with a certain length
         When I run "password create name --length 12" interactively
         And I type "masterpa$$"
         Then the output should contain "generated and added to safe"
+        And the clipboard should contain the password for the "name" key
        
     Scenario: Generate a password with a name that exists
         Given A safe exists with masterpassword "masterpa$$" and a "name" key

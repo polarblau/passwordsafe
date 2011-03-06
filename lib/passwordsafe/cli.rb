@@ -38,7 +38,6 @@ module PasswordSafe
       if password.nil?
         puts "#{name} does not exist in this safe."
       else
-        system "/bin/bash -c 'echo -n #{password}' | pbcopy"
         puts "#{name}: #{password}"
       end
     end
