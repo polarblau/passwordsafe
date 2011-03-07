@@ -18,7 +18,6 @@ describe PasswordSafe::Keyring do
   end
 
   describe "length" do
-
     it "returns the number of keys in the keyring" do
       keyring.should respond_to(:length)
       keyring.length.should be_a(Integer)
@@ -26,7 +25,6 @@ describe PasswordSafe::Keyring do
   end
 
   describe "add" do
-
     it "adds a key to the keyring" do
       keyring.should respond_to(:add).with(2).arguments
       keyring.add("name", "password")
@@ -43,7 +41,6 @@ describe PasswordSafe::Keyring do
   end
 
   describe "generate" do
-    
     it "adds a generated password to the keyring" do
       keyring.should respond_to(:generate).with(1).arguments
       keyring.generate("name")
@@ -68,12 +65,9 @@ describe PasswordSafe::Keyring do
       password = keyring.generate("name")
       Clipboard.paste.should eq(password)
     end
-    
   end
-
   
   describe "get" do
-
     it "gets a key from the keyring" do
       safe.stub(:read_safe).and_return({"name" => "password"})
       keyring.get("name").should eq("password")
@@ -86,11 +80,9 @@ describe PasswordSafe::Keyring do
       password = keyring.get("name")
       Clipboard.paste.should eq(password)
     end
-    
   end
 
   describe "list" do
-
     it "returns a list of existing key names" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
       keyring.list.should eq(["first", "second"])
@@ -98,6 +90,27 @@ describe PasswordSafe::Keyring do
     it "returns an empty array if there are no keys" do
       keyring.list.should eq([])
     end
+  end
+  
+  describe "change" do
+     it "responds to 'change'" do
+        safe.stub(:read_safe).and_return({"name" => "password"})
+        keyring.should respond_to(:change).with(2).arguments
+      end
+      it "throws an error if a key does not exist" do
+        expect{keyring.change("name", "password")}.to raise_error()
+      end
+      it "updates the password" do
+        safe.stub(:read_safe).and_return({"name" => "password"})
+        keyring.get("name").should eq("password")
+        keyring.change("name", "newpassword")
+        keyring.get("name").should eq("newpassword")
+      end
+      it "updates the modified keyring to the safe" do
+        safe.stub(:read_safe).and_return({"name" => "password"})
+        safe.should_receive(:write_safe).with({"name" => "newpassword"})
+        keyring.change("name", "newpassword")
+      end
   end
 
   describe "remove" do

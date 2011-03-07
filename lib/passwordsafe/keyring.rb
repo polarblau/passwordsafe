@@ -24,6 +24,12 @@ module PasswordSafe
       @ring.store(name, password)
       @safe.write_safe @ring
     end
+    
+    def change name, password
+      raise KeyMissingException, "#{name} does not exist in this safe.", caller unless @ring.has_key?(name)
+      @ring[name] = password
+      @safe.write_safe @ring
+    end
 
     def generate name, length = 8
       raise KeyExistsException, "Key already exists in keyring, if you'd like to add it remove the existing key", caller if @ring.has_key?(name)

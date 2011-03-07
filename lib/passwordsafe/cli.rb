@@ -53,6 +53,18 @@ module PasswordSafe
         puts "entry has been removed"
       end
     end
+    
+    desc "change NAME PASSWORD", "Change the password for an existing name NAME to password PASSWORD"
+    def change name, password
+      safe = make_safe
+      begin
+       PasswordSafe::Keyring.new(safe).change(name, password)
+      rescue PasswordSafe::Keyring::KeyMissingException => msg
+        puts "#{msg}"
+      else
+        puts "password for #{name} has been updated"
+      end
+    end
 
     desc "list", "List the names of all the existing passwords in the safe"
     def list
