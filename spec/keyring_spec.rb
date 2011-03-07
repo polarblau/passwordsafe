@@ -71,14 +71,15 @@ describe PasswordSafe::Keyring do
     
   end
 
+  
   describe "get" do
 
     it "gets a key from the keyring" do
       safe.stub(:read_safe).and_return({"name" => "password"})
       keyring.get("name").should eq("password")
     end
-    it "returns nil if the key does not exist" do
-      keyring.get("name").should be_nil
+    it "throws an error if a key does not exist" do
+      expect{keyring.get("name")}.to raise_error()
     end
     it "should copy the retrieved password to the clipboard" do
       safe.stub(:read_safe).and_return({"name" => "password"})
@@ -100,16 +101,22 @@ describe PasswordSafe::Keyring do
   end
 
   describe "remove" do
-
+    it "responds to 'remove'" do
+      safe.stub(:read_safe).and_return({"name" => "password"})
+      keyring.should respond_to(:remove).with(1).arguments
+    end
     it "removes an existing key" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
       keyring.remove("first")
-      keyring.get("first").should eq(nil)
+      expect{keyring.get("first")}.to raise_error()
     end
     it "saves the modified keyring to the safe" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
       safe.should_receive(:write_safe).with({"second" => "password"})
       keyring.remove("first")
+    end
+    it "throws an error if a key does not exist" do
+      expect{keyring.remove("name")}.to raise_error()
     end
   end
 end
