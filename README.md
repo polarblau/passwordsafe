@@ -9,17 +9,26 @@ Based on 'Tutorial: Build your own password safe with Ruby!' at http://rbjl.net/
     password add name password
 Use passwordsafe to add a password with NAME to the safe.  The utility will prompt for a master password to use to encrypt the file. *Do NOT loose your master password, it is unrecoverable!*
 
+    password change name password
+Change an existing named password to this new password.
+
+    password generate name [--length]
+Generate a new password with name, accepts an optional length argument.
+
     password get name
 Use passwordsafe to retrive an existing password out of your safe.  The utility will prompt for a master password.
 
     password list
 List all the existing password names in the safe.
 
+    password remove name
+Remove an existing password from your safe.
 
 ## Not Implemented yet
 
-    password remove name
-    password help
+# Contributers
+
+* polarblau https://github.com/polarblau
 
 # Note on Patches/Pull Requests
 
