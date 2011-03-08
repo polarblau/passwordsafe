@@ -8,10 +8,10 @@ Feature: Get
         When I run "password get name" interactively
         And I type "masterpa$$"
         Then the output should contain "name: "
-
+        And the clipboard should contain the password for the "name" key
+  
     Scenario: Get a password with a name that does not exist
         Given A safe exists with masterpassword "masterpa$$" and a "name" key
         When I run "password get name2" interactively
         And I type "masterpa$$"
         Then the output should contain "name2 does not exist in this safe."
-
