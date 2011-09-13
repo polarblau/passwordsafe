@@ -2,13 +2,13 @@ require 'spec_helper'
 require 'passwordsafe/cli'
 
 describe PasswordSafe::CLI do
+  before(:each) do
+    @dummy_safe = mock PasswordSafe::Safe
+    subject.stub(:make_safe).and_return(@dummy_safe)
+    @mock_keyring = mock PasswordSafe::Keyring
+    PasswordSafe::Keyring.stub(:new).with(@dummy_safe).and_return(@mock_keyring)
+  end
   describe "#add" do
-    before(:each) do
-      @dummy_safe = mock PasswordSafe::Safe
-      subject.stub(:make_safe).and_return(@dummy_safe)
-      @mock_keyring = mock PasswordSafe::Keyring
-      PasswordSafe::Keyring.stub(:new).with(@dummy_safe).and_return(@mock_keyring)
-    end
     it "creates a new key in the keyring" do
       @mock_keyring.should_receive(:add).with("name", "pass")
       subject.add("name", "pass")
@@ -25,12 +25,6 @@ describe PasswordSafe::CLI do
     end
   end
   describe "#generate" do
-    before(:each) do
-      @dummy_safe = mock PasswordSafe::Safe
-      subject.stub(:make_safe).and_return(@dummy_safe)
-      @mock_keyring = mock PasswordSafe::Keyring
-      PasswordSafe::Keyring.stub(:new).with(@dummy_safe).and_return(@mock_keyring)
-    end
     it "generates a password" do
       @mock_keyring.should_receive(:generate)
       subject.generate("name")
@@ -47,12 +41,6 @@ describe PasswordSafe::CLI do
     end
   end
   describe "#get" do
-    before(:each) do
-      @dummy_safe = mock PasswordSafe::Safe
-      subject.stub(:make_safe).and_return(@dummy_safe)
-      @mock_keyring = mock PasswordSafe::Keyring
-      PasswordSafe::Keyring.stub(:new).with(@dummy_safe).and_return(@mock_keyring)
-    end
     it "gets the named password from the safe" do
       @mock_keyring.should_receive(:get).with("name")
       subject.get "name"
@@ -66,6 +54,50 @@ describe PasswordSafe::CLI do
       @mock_keyring.stub(:get).with("name").and_return("pass")
       subject.should_receive(:puts).with("name: pass")
       subject.get "name"
+    end
+  end
+  describe "#remove" do
+    it "removes a key from the keyring" do
+      @mock_keyring.should_receive(:remove).with("name")
+      subject.remove("name")
+    end
+    it "displays a KeyMissingException" do
+      @mock_keyring.stub(:remove) { raise PasswordSafe::Keyring::KeyMissingException, "dummy msg" }
+      subject.should_receive(:puts).with("dummy msg")
+      subject.remove("name")
+    end
+    it "displays a msg to the user on sucessfull remove" do
+      @mock_keyring.stub(:remove)
+      subject.should_receive(:puts).with("entry has been removed")
+      subject.remove("name")
+    end
+  end
+  describe "#change" do
+    it "changes a key in the keyring" do
+      @mock_keyring.should_receive(:change).with("name", "pass")
+      subject.change("name", "pass")
+    end
+    it "displays a KeyMissingException" do
+      @mock_keyring.stub(:change) { raise PasswordSafe::Keyring::KeyMissingException, "dummy msg" }
+      subject.should_receive(:puts).with("dummy msg")
+      subject.change("name", "pass")
+    end
+    it "displays a msg to the user on sucessfull change" do
+      @mock_keyring.stub(:change)
+      subject.should_receive(:puts).with("password for name has been updated")
+      subject.change("name", "pass")
+    end
+  end
+  describe "#list" do
+    it "displays (none) if there are no keys" do
+      @mock_keyring.stub(:list).and_return([])
+      subject.should_receive(:puts).with("List: (none)")
+      subject.list
+    end
+    it "displays keys if they exist" do
+      @mock_keyring.stub(:list).and_return(["pass1", "pass2"])
+      subject.should_receive(:puts).with("List: pass1, pass2")
+      subject.list
     end
   end
 end
