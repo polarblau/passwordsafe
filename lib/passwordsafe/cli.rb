@@ -70,8 +70,7 @@ module PasswordSafe
     def list
       safe = make_safe
       keys = PasswordSafe::Keyring.new(safe).list
-      msg = "List: " + (keys.empty? ? "(none)" : "#{keys.join(", ")}")
-      puts msg
+      puts "List: " + (keys.empty? ? "(none)" : "#{keys.join(", ")}")
     end
 
     no_tasks do
