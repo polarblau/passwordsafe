@@ -1,4 +1,5 @@
 require 'thor'
+require 'highline'
 require 'passwordsafe/safe'
 require 'passwordsafe/keyring'
 
@@ -75,7 +76,7 @@ module PasswordSafe
 
     no_tasks do
       def make_safe filename = DEFAULTSAFE
-        masterpass = ask("Enter your master password:  ") { |q| q.echo = "x" }
+        masterpass = HighLine.new.ask("Enter your master password:  ") { |q| q.echo = "x" }
         PasswordSafe::Safe.new(filename, masterpass)
       end
     end
