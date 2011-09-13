@@ -1,3 +1,7 @@
+== 0.0.5
+* New feature: master password is hidden 
+* New feature: safe file has been defaulted to ENV['HOME']/.safefile
+
 == 0.0.4
 * New feature: `password list`
 

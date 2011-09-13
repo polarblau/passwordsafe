@@ -1,7 +1,3 @@
-require 'passwordsafe/safe'
-require 'passwordsafe/keyring'
-require 'passwordsafe/cli'
-require 'clipboard'
 
 Given /^A safe exists with masterpassword "([^"]*)"$/ do |masterpass|
   in_current_dir do
