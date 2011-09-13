@@ -5,12 +5,12 @@ Feature: Remove
 
     Scenario: Remove a password
         Given A safe exists with masterpassword "masterpa$$" and a "name" key
-        When I run "password remove name" interactively
+        When I run `password remove name` interactively
         And I type "masterpa$$"
         Then the output should contain "entry has been removed"
         
     Scenario: Remove a password for a key that doesn't exist
         Given A safe exists with masterpassword "masterpa$$" and a "name" key
-        When I run "password remove name2" interactively
+        When I run `password remove name2` interactively
         And I type "masterpa$$"
         Then the output should contain "name2 does not exist in this safe." 
