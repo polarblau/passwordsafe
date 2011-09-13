@@ -46,4 +46,26 @@ describe PasswordSafe::CLI do
       subject.generate("name")
     end
   end
+  describe "#get" do
+    before(:each) do
+      @dummy_safe = mock PasswordSafe::Safe
+      subject.stub(:make_safe).and_return(@dummy_safe)
+      @mock_keyring = mock PasswordSafe::Keyring
+      PasswordSafe::Keyring.stub(:new).with(@dummy_safe).and_return(@mock_keyring)
+    end
+    it "gets the named password from the safe" do
+      @mock_keyring.should_receive(:get).with("name")
+      subject.get "name"
+    end
+    it "tells the user if a password does not exist" do
+      @mock_keyring.stub(:get).with("name").and_return(nil)
+      subject.should_receive(:puts).with("name does not exist in this safe.")
+      subject.get "name"
+    end
+    it "tells the user the password" do
+      @mock_keyring.stub(:get).with("name").and_return("pass")
+      subject.should_receive(:puts).with("name: pass")
+      subject.get "name"
+    end
+  end
 end
