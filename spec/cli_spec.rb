@@ -45,6 +45,11 @@ describe PasswordSafe::CLI do
         mock_keyring.should_receive(:get).with("name")
         subject.get "name"
       end
+      it "displays a KeyMissingException" do
+        mock_keyring.stub(:get) { raise PasswordSafe::Keyring::KeyMissingException, "dummy msg" }
+        subject.should_receive(:puts).with("dummy msg")
+        subject.get "name"
+      end
       it "tells the user if a password does not exist" do
         mock_keyring.stub(:get).with("name").and_return(nil)
         subject.should_receive(:puts).with("name does not exist in this safe.")

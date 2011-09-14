@@ -33,11 +33,16 @@ module PasswordSafe
 
     desc "get NAME", "Get an existing password with name NAME from keyring"
     def get name
-      password = get_keyring.get name
-      if password.nil?
-        puts "#{name} does not exist in this safe."
+      begin
+        password = get_keyring.get name
+      rescue PasswordSafe::Keyring::KeyMissingException => msg
+        puts "#{msg}"
       else
-        puts "#{name}: #{password}"
+       if password.nil?
+         puts "#{name} does not exist in this safe."
+       else
+         puts "#{name}: #{password}"
+       end
       end
     end
     
