@@ -3,11 +3,9 @@ require 'passwordsafe/cli'
 
 describe PasswordSafe::CLI do
   context "command interface" do
-    let(:dummy_safe) { mock PasswordSafe::Safe }
     let(:mock_keyring) { mock PasswordSafe::Keyring}
     before(:each) do
-      subject.stub(:make_safe).and_return(dummy_safe)
-      PasswordSafe::Keyring.stub(:new).with(dummy_safe).and_return(mock_keyring)
+      subject.stub(:get_keyring).and_return(mock_keyring)
       subject.stub(:puts)
     end
     describe "#add" do
@@ -122,6 +120,19 @@ describe PasswordSafe::CLI do
       it "asks the user for a master safe password" do
         askable.should_receive(:ask)
         subject.make_safe
+      end
+    end
+    describe "#get_keyring" do
+      it "creates a keyring" do
+        subject.stub(:make_safe).and_return(mock(PasswordSafe::Safe))
+        PasswordSafe::Keyring.should_receive(:new)
+        subject.get_keyring
+      end
+      it "re-calls make_safe if it fails to open the keyring" do
+        subject.should_receive(:make_safe).twice.and_return(mock(PasswordSafe::Safe))
+        PasswordSafe::Keyring.stub(:new){ raise OpenSSL::Cipher::CipherError }
+        subject.stub(:abort)
+        subject.get_keyring
       end
     end
   end
