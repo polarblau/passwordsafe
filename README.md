@@ -6,6 +6,11 @@ Based on 'Tutorial: Build your own password safe with Ruby!' at http://rbjl.net/
 ## Currently implemented
 **NOTE** This gem is currently in alpha, if you'd like to try it and make suggestions feel free but please do not store valuble information in it yet.
 
+Passwords are stored in a safefile, this file defaults to .safefile in
+the user's home directory.  If you wish to customize, this set an
+environment variable $SAFEFILE with the absolute path to the file you
+wish to use.
+
     password add name password
 Use passwordsafe to add a password with NAME to the safe.  The utility will prompt for a master password to use to encrypt the file. *Do NOT loose your master password, it is unrecoverable!*
 
@@ -23,8 +28,6 @@ List all the existing password names in the safe.
 
     password remove name
 Remove an existing password from your safe.
-
-## Not Implemented yet
 
 # Contributers
 

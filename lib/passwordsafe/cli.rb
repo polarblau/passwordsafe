@@ -5,7 +5,7 @@ require 'passwordsafe/keyring'
 
 module PasswordSafe
   class CLI < Thor
-    DEFAULTSAFE = 'safefile'
+    DEFAULTSAFE = ENV['SAFEFILE']
 
     desc "add NAME PASSWORD", "Add a new PASSWORD to the keyring with name NAME"
     def add name, password
