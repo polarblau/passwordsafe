@@ -101,6 +101,11 @@ describe PasswordSafe::CLI do
         subject.should_receive(:puts).with("List: pass1, pass2")
         subject.list
       end
+      it "displays keys in alphabetical order" do
+        mock_keyring.stub(:list).and_return(["password", "another"])
+        subject.should_receive(:puts).with("List: another, password")
+        subject.list
+      end
     end
   end
   context "helpers" do

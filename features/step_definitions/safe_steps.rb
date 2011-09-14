@@ -16,6 +16,15 @@ Given /^A safe exists with masterpassword "([^"]*)" and a "([^"]*)" key$/ do |ma
   end
 end
 
+Given /^A safe exists with masterpassword "([^"]*)" and the keys$/ do |masterpass, keys_table|
+  in_current_dir do
+    @safe = PasswordSafe::Safe.new(PasswordSafe::CLI::DEFAULTSAFE, masterpass)
+    keys_table.hashes.each do |key_hash|
+      PasswordSafe::Keyring.new(@safe).add key_hash[:key], "dummypass"
+    end
+  end
+end
+
 Given /^A safe exists with masterpassword "([^"]*)" and "([^"]*)" keys$/ do |masterpass, keys|
   in_current_dir do
     @safe = PasswordSafe::Safe.new(PasswordSafe::CLI::DEFAULTSAFE, masterpass)

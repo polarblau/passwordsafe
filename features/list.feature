@@ -15,3 +15,14 @@ Feature: List
         And I type "masterpa$$"
         Then the output should contain "List: pass"
 
+    Scenario: Several passwords stored
+    Given A safe exists with masterpassword "masterpa$$" and the keys 
+      |key     |
+      |onekey  |
+      |twokey  |
+      |redkey  |
+      |bluekey |
+    When I run `password list` interactively
+      And I type "masterpa$$"
+    Then the output should contain "List: bluekey, onekey, redkey, twokey"
+
