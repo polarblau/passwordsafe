@@ -93,17 +93,17 @@ describe PasswordSafe::CLI do
     describe "#list" do
       it "displays (none) if there are no keys" do
         mock_keyring.stub(:list).and_return([])
-        subject.should_receive(:puts).with("List: (none)")
+        subject.should_receive(:puts).with("List:\n (none)")
         subject.list
       end
       it "displays keys if they exist" do
         mock_keyring.stub(:list).and_return(["pass1", "pass2"])
-        subject.should_receive(:puts).with("List: pass1, pass2")
+        subject.should_receive(:puts).with("List:\n pass1\n pass2")
         subject.list
       end
       it "displays keys in alphabetical order" do
         mock_keyring.stub(:list).and_return(["password", "another"])
-        subject.should_receive(:puts).with("List: another, password")
+        subject.should_receive(:puts).with("List:\n another\n password")
         subject.list
       end
     end

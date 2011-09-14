@@ -72,7 +72,7 @@ module PasswordSafe
       safe = make_safe
       keys = PasswordSafe::Keyring.new(safe).list
       keys.sort! { |a, b| a.downcase <=> b.downcase }
-      puts "List: " + (keys.empty? ? "(none)" : "#{keys.join(", ")}")
+      puts "List:\n " + (keys.empty? ? "(none)" : "#{keys.join("\n ")}")
     end
 
     no_tasks do
