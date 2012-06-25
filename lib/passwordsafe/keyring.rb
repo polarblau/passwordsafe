@@ -33,13 +33,7 @@ module PasswordSafe
 
     def generate name, length = nil
       raise KeyExistsException, "Key already exists in keyring, if you'd like to add it remove the existing key", caller if @ring.has_key?(name)
-      length = if length
-        length
-      elsif ENV.has_key?('PW_LENGTH')
-        ENV['PW_LENGTH'].to_i
-      else
-        8
-      end
+      length = length || ENV.has_key?('PW_LENGTH') ? ENV['PW_LENGTH'].to_i : 8
       password = generate_password(length)
       @ring.store(name, password)
       @safe.write_safe @ring
