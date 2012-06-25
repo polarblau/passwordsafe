@@ -18,7 +18,7 @@ module PasswordSafe
         puts "password #{name} added to safe"
       end
     end
-    
+
     desc "generate NAME", "Generate a new PASSWORD and add it to the keyring with NAME"
     method_options :length => 8
     def generate name
@@ -45,7 +45,7 @@ module PasswordSafe
        end
       end
     end
-    
+
     desc "remove NAME", "Remove an existing passoword with name NAME from keyring"
     def remove name
       begin
@@ -56,7 +56,7 @@ module PasswordSafe
         puts "entry has been removed"
       end
     end
-    
+
     desc "change NAME PASSWORD", "Change the password for an existing name NAME to password PASSWORD"
     def change name, password
       begin
@@ -88,7 +88,7 @@ module PasswordSafe
         end
       end
       def make_safe filename = DEFAULTSAFE
-        masterpass = HighLine.new.ask("Enter your master password:  ") { |q| q.echo = "x" }
+        masterpass = HighLine.new.ask("Enter your master password:  ") { |q| q.echo = false }
         PasswordSafe::Safe.new(filename, masterpass)
       end
     end
