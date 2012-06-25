@@ -18,6 +18,14 @@ Feature: Add
         And the clipboard should contain the password for the "name" key
         And the password for the "name" key should be 12 characters long
 
+   Scenario: Generate a password with a certain length using alias
+      Given A safe exists with masterpassword "masterpa$$"
+        When I run `password generate name -l 14` interactively
+        And I type "masterpa$$"
+        Then the output should contain "generated and added to safe"
+        And the clipboard should contain the password for the "name" key
+        And the password for the "name" key should be 14 characters long
+
     Scenario: Generate a password with a name that exists
         Given A safe exists with masterpassword "masterpa$$" and a "name" key
         When I run `password generate name` interactively
