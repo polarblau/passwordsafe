@@ -1,4 +1,4 @@
-# Password Safe
+# Password Safe [![Build Status](https://secure.travis-ci.org/polarblau/passwordsafe.png)](http://travis-ci.org/polarblau/passwordsafe)
 A command line application that can store and retrieve passwords from an encrypted file.
 
 Based on 'Tutorial: Build your own password safe with Ruby!' at http://rbjl.net/41-tutorial-build-your-own-password-safe-with-ruby which won't run on my machine.  So rather than try to fix it, I decided to build my own, with an actual attempt at testing/BDD.  This was primarily done for my own education, tips/suggestions are welcome.
