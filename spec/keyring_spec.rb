@@ -89,7 +89,7 @@ describe PasswordSafe::Keyring do
   describe "list" do
     it "returns a list of existing key names" do
       safe.should_receive(:read_safe).and_return({"first" => "password", "second" => "password"})
-      keyring.list.should eq(["first", "second"])
+      keyring.list.sort.should eq(["first", "second"])
     end
     it "returns an empty array if there are no keys" do
       keyring.list.should eq([])
