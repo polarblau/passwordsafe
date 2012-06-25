@@ -35,16 +35,10 @@ Given /^A safe exists with masterpassword "([^"]*)" and "([^"]*)" keys$/ do |mas
   end
 end
 
-Given /^a environment variable "([^"]*)" has been set to "([^"]*)"$/ do |var_name, value|
-  ENV[var_name] = value
-end
-
-
 Then /^the password for the "([^"]*)" key should be (\d+) characters long$/ do |key_name, length|
   password = PasswordSafe::Keyring.new(@safe).get key_name
   password.length.should eq(length.to_i)
 end
-
 
 Then /^the clipboard should contain the password for the "([^"]*)" key$/ do |key_name|
   password = PasswordSafe::Keyring.new(@safe).get key_name
