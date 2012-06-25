@@ -17,8 +17,10 @@ Use passwordsafe to add a password with NAME to the safe.  The utility will prom
     password change name password
 Change an existing named password to this new password.
 
-    password generate name [--length]
+    password generate name [--length, -l]
 Generate a new password with name, accepts an optional length argument.
+If an environment variable `PW_LENGTH` has been set, it will be used as
+default unless a length option has been passed.
 
     password get name
 Use passwordsafe to retrive an existing password out of your safe.  The utility will prompt for a master password.
