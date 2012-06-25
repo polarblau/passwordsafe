@@ -9,19 +9,29 @@ Feature: Add
         And I type "masterpa$$"
         Then the output should contain "generated and added to safe"
         And the clipboard should contain the password for the "name" key
- 
+
     Scenario: Generate a password with a certain length
       Given A safe exists with masterpassword "masterpa$$"
         When I run `password generate name --length 12` interactively
         And I type "masterpa$$"
         Then the output should contain "generated and added to safe"
         And the clipboard should contain the password for the "name" key
-       
+        And the password for the "name" key should be 12 characters long
+
+    Scenario: Generate a password with a certain length specified in ENV variable
+      Given A safe exists with masterpassword "masterpa$$"
+      And a environment variable "PW_LENGTH" has been set to "14"
+        When I run `password generate name` interactively
+        And I type "masterpa$$"
+        Then the output should contain "generated and added to safe"
+        And the clipboard should contain the password for the "name" key
+        And the password for the "name" key should be 12 characters long
+
     Scenario: Generate a password with a name that exists
         Given A safe exists with masterpassword "masterpa$$" and a "name" key
         When I run `password generate name` interactively
         And I type "masterpa$$"
         Then the output should contain "Key already exists in keyring"
         And the output should not contain "generated and added to safe"
-        
-      
+
+
