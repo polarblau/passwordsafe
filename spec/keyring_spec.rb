@@ -5,7 +5,7 @@ require 'clipboard'
 describe PasswordSafe::Keyring do
   let(:safe) { mock PasswordSafe::Safe, :read_safe => {}, :write_safe => nil }
   let(:keyring) { PasswordSafe::Keyring.new(safe) }
-  
+
   after (:each) do
     Clipboard.clear
   end
@@ -57,6 +57,10 @@ describe PasswordSafe::Keyring do
     it "generates a password of a specified length" do
       keyring.generate("name", 12).length.should eq(12)
     end
+    it "generates a password of a length specified via ENV variable PW_LENGTH" do
+      ENV['PW_LENGTH'] = '14'
+      keyring.generate("name").length.should eq(14)
+    end
     it "throws an error when generating passord for a duplicate key name" do
       keyring.generate("name")
       expect{keyring.generate("name")}.to raise_error()
@@ -66,7 +70,7 @@ describe PasswordSafe::Keyring do
       Clipboard.paste.should eq(password)
     end
   end
-  
+
   describe "get" do
     it "gets a key from the keyring" do
       safe.stub(:read_safe).and_return({"name" => "password"})
@@ -91,7 +95,7 @@ describe PasswordSafe::Keyring do
       keyring.list.should eq([])
     end
   end
-  
+
   describe "change" do
      it "responds to 'change'" do
         safe.stub(:read_safe).and_return({"name" => "password"})
