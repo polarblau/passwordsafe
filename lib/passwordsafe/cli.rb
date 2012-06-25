@@ -20,7 +20,7 @@ module PasswordSafe
     end
 
     desc "generate NAME", "Generate a new PASSWORD and add it to the keyring with NAME"
-    method_options :length => 8
+    method_options %w(length -l) => :numeric
     def generate name
       begin
         password = get_keyring.generate(name, options[:length])
