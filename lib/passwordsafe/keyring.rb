@@ -50,7 +50,7 @@ module PasswordSafe
       if qr
         code = RQRCode::QRCode.new password
         png  = code.to_img
-        file = Tempfile.new
+        file = Tempfile.new('passwordsafe_qr')
         png.resize(200, 200).save(file.path)
         `open #{file.path}`
         file.close
