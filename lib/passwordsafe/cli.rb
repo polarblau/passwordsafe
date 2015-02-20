@@ -32,9 +32,10 @@ module PasswordSafe
     end
 
     desc "get NAME", "Get an existing password with name NAME from keyring"
+    method_options :qr => :boolean
     def get name
       begin
-        password = get_keyring.get name
+        password = get_keyring.get name, options[:qr]
       rescue PasswordSafe::Keyring::KeyMissingException => msg
         puts "#{msg}"
       else

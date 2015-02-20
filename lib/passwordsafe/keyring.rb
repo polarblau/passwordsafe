@@ -1,5 +1,7 @@
 require 'passwordsafe/safe'
 require 'clipboard'
+require 'tempfile'
+require 'rqrcode_png'
 
 module PasswordSafe
   class Keyring
@@ -41,9 +43,19 @@ module PasswordSafe
       password
     end
 
-    def get name
+    def get name, qr = nil
       raise KeyMissingException, "#{name} does not exist in this safe.", caller unless @ring.has_key?(name)
       password = @ring[name]
+
+      if qr
+        code = RQRCode::QRCode.new password
+        png  = qr.to_img
+        file = Tempfile.new
+        png.resize(200, 200).save(file.path)
+        `open #{file.path}`
+        file.close
+      end
+
       Clipboard.copy(password)
       password
     end

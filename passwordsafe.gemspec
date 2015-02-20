@@ -28,5 +28,6 @@ Gem::Specification.new do |s|
   s.add_dependency "thor"
   s.add_dependency "highline"
   s.add_dependency "clipboard"
+  s.add_dependency "rqrcode_png"
 end
 
