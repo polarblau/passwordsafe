@@ -49,7 +49,7 @@ module PasswordSafe
 
       if qr
         code = RQRCode::QRCode.new password
-        png  = qr.to_img
+        png  = code.to_img
         file = Tempfile.new
         png.resize(200, 200).save(file.path)
         `open #{file.path}`
