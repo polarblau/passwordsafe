@@ -1,6 +1,5 @@
 require 'passwordsafe/safe'
 require 'clipboard'
-require 'tempfile'
 require 'rqrcode_png'
 
 module PasswordSafe
@@ -48,12 +47,11 @@ module PasswordSafe
       password = @ring[name]
 
       if qr
-        code = RQRCode::QRCode.new password
+        code = RQRCode::QRCode.new(password)
         png  = code.to_img
-        file = Tempfile.new('passwordsafe_qr')
+        file = File.new("/tmp/passwordsafe_qr_#{Time.new.to_i}.png", "w")
         png.resize(200, 200).save(file.path)
         `open #{file.path}`
-        file.close
       end
 
       Clipboard.copy(password)
