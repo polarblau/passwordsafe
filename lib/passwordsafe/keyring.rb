@@ -47,7 +47,7 @@ module PasswordSafe
       password = @ring[name]
 
       if qr
-        code = RQRCode::QRCode.new(password)
+        code = RQRCode::QRCode.new(password, :size => 6) # works fine with 48 chars
         png  = code.to_img
         file = File.new("/tmp/passwordsafe_qr_#{Time.new.to_i}.png", "w")
         png.resize(200, 200).save(file.path)
